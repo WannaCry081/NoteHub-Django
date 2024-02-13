@@ -8,6 +8,7 @@ from core.apis.v1.serializers import UserSerializer
 
 class UserViewSet(viewsets.GenericViewSet, 
                   mixins.ListModelMixin,
+                  mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin):
     
     queryset = User.objects.all()
@@ -26,6 +27,10 @@ class UserViewSet(viewsets.GenericViewSet,
             return Response({"detail" : "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs) 
     
     
     def destroy(self, request, *args, **kwargs):
