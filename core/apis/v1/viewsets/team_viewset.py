@@ -23,7 +23,7 @@ class TeamViewSet(viewsets.GenericViewSet,
     
     
     def create(self, request, *args,  **kwargs):
-        return super().list(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
     
     
     def retrieve(self, request, *args, **kwargs):
