@@ -4,7 +4,7 @@ from core.models import Team
 
 class TeamSerializer(serializers.ModelSerializer):
     
-    members = serializers.StringRelatedField(many=True)
+    members = serializers.StringRelatedField(many=True, read_only = True)
     
     class Meta:
         
