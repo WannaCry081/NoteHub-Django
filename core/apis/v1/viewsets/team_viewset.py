@@ -29,3 +29,6 @@ class TeamViewSet(viewsets.GenericViewSet,
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
     
+    
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
