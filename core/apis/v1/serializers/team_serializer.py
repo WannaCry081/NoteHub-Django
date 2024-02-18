@@ -1,3 +1,4 @@
+import bleach
 from rest_framework import serializers
 from core.models import Team
 
@@ -10,6 +11,18 @@ class TeamSerializer(serializers.ModelSerializer):
         
         model = Team
         fields = ["id", "profile", "name", "description", "members"]
+        
+    
+    def validate(request, attrs):
+        
+        if "profile" in attrs: 
+            attrs["profile"] = bleach.clean(attrs["profile"])
+        if "name" in attrs:
+            attrs["name"] = bleach.clean(attrs["name"])
+        if "description" in attrs:
+            attrs["description"] = bleach.clean(attrs["description"])
+            
+        return attrs
         
     
     def get_members(self, instance):
