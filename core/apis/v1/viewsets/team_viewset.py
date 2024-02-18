@@ -16,3 +16,7 @@ class TeamViewSet(viewsets.GenericViewSet,
     serializer_class = TeamSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    
+    
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
