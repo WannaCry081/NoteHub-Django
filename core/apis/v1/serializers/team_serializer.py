@@ -10,6 +10,28 @@ class TeamSerializer(serializers.ModelSerializer):
         
         model = Team
         fields = ["id", "profile", "name", "description", "members"]
+        
+    
+    def get_members(self, instance):
+        
+        if instance:
+            members_instance = instance.members.all()
+            members = []
+            
+            for member in members_instance:
+                members.append({
+                    "id" : member.id,
+                    "username" : member.username,
+                    "first_name" : member.first_name,
+                    "middle_name" : member.middle_name,
+                    "last_name" : member.last_name,
+                    "email" : member.email
+                })
+        
+            return members
+            
+        else:
+            return None        
     
     
     def to_representation(self, instance):
