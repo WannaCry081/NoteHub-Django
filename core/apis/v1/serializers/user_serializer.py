@@ -19,6 +19,19 @@ class UserSerializer(serializers.ModelSerializer):
         }
         
     
+    def __init__(self, *args, **kwargs):
+        super(UserSerializer, self).__init__(*args, **kwargs)
+        
+        exclude_fields = []
+        request_method = self.context["request"].method if "request" in self.context else None
+        
+        if request_method in ["PATCH", "PUT"]:
+            exclude_fields.extend(["re_password", "password"])
+
+        for field_name in exclude_fields:
+            self.fields.pop(field_name, None)
+    
+        
     def validate(self, attrs):
 
         if "username" in attrs:
@@ -31,11 +44,11 @@ class UserSerializer(serializers.ModelSerializer):
             attrs["middle_name"] = bleach.clean(attrs["middle_name"])
         if "last_name" in attrs:
             attrs["last_name"] = bleach.clean(attrs["last_name"])
-            
-        if attrs["password"] != attrs["re_password"]:
-            raise serializers.ValidationError("Invalid credentails. Please try again.")
-            
-        attrs.pop("re_password")
+          
+        if "password" in attrs and "re_password" in attrs: 
+            if attrs["password"] != attrs["re_password"]:
+                raise serializers.ValidationError("Invalid credentails. Please try again.")
+    
         return attrs
     
     
