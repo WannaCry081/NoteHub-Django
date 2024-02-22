@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         for field_name in exclude_fields:
             self.fields.pop(field_name, None)
-    
+        
         
     def validate(self, attrs):
 
@@ -48,6 +48,8 @@ class UserSerializer(serializers.ModelSerializer):
         if "password" in attrs and "re_password" in attrs: 
             if attrs["password"] != attrs["re_password"]:
                 raise serializers.ValidationError("Invalid credentails. Please try again.")
+            
+            attrs.pop("re_password")
     
         return attrs
     
