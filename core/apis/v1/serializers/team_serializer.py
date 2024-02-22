@@ -10,8 +10,11 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         
         model = Team
-        fields = ["id", "profile", "name", "description", "members"]
-        
+        fields = ["id", "profile", "name", "description", "owner", "members"]
+        extra_kwargs = {
+            "owner" : {"read_only" : True}
+        }
+    
     
     def validate(request, attrs):
         
