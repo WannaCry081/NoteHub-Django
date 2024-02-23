@@ -5,6 +5,7 @@ from core.models import Team
 
 class TeamSerializer(serializers.ModelSerializer):
     
+    owner = serializers.StringRelatedField(read_only = True)
     members = serializers.StringRelatedField(many=True, read_only = True)
     
     class Meta:
@@ -26,6 +27,20 @@ class TeamSerializer(serializers.ModelSerializer):
             attrs["description"] = bleach.clean(attrs["description"])
             
         return attrs
+    
+    
+    def get_owner(self, instance):
+        
+        if instance:
+            owner_instance = instance.owner
+            return {
+                "id" : owner_instance.id,
+                "username" : owner_instance.username,
+                "email" : owner_instance.email,
+            }
+            
+        else:
+            return None
         
     
     def get_members(self, instance):
@@ -53,5 +68,6 @@ class TeamSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         
         data = super().to_representation(instance)
+        data["owner"] = self.get_owner(instance)
         data["members"] = self.get_members(instance)
         return data
