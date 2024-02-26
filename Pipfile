@@ -6,12 +6,14 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
+djangorestframework-xml = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
+django-cors-headers = "*"
 python-dotenv = "*"
 bleach = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"
