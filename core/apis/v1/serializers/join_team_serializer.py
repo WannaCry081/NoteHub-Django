@@ -1,6 +1,6 @@
-from rest_framework import serializer
+from rest_framework import serializers
 
 
-class JoinTeamSerializer(serializer.Serializer):
+class JoinTeamSerializer(serializers.Serializer):
     
-    pass
+    code = serializers.CharField(required = True)
