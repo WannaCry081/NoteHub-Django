@@ -1,9 +1,10 @@
 from django.db import models
-
+from core.utils import code_generater
 
 class Team(models.Model):
     
     profile = models.URLField(blank = True, null = True)
+    code = models.CharField(max_length = 8, unique = True,  default = code_generater)
     name = models.CharField(max_length = 20, unique = True)
     description = models.TextField(blank = True)
     
