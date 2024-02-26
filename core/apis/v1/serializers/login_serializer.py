@@ -1,4 +1,4 @@
-# core/apis/v1/serializers.py
+import bleach
 from rest_framework import serializers
 from core.models import User
 from django.contrib.auth.hashers import check_password
@@ -13,15 +13,19 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        email = attrs.get("email")
-        password = attrs.get("password")
+
+        if "email" in attrs:
+            attrs["email"] = bleach.clean(attrs["email"])
+
+        if "password" in attrs:
+            attrs["password"] = bleach.clean(attrs["password"])
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=attrs["email"])
         except User.DoesNotExist:
             raise serializers.ValidationError("Invalid credentials. Please try again.")
 
-        if not check_password(password, user.password):
+        if not check_password(attrs["password"], user.password):
             raise serializers.ValidationError("Invalid credentials. Please try again.")
 
         attrs["user"] = user
