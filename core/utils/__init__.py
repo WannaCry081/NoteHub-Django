@@ -1,4 +1,4 @@
-from core.utils.code_generator_util import code_generater
+from core.utils.code_generator_util import code_generator
 
 
 __all__ = [
