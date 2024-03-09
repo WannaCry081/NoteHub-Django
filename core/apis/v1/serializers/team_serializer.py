@@ -71,4 +71,8 @@ class TeamSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data["owner"] = self.get_owner(instance)
         data["members"] = self.get_members(instance)
+        
+        if "code" in data and self.context["request"].method != "POST": 
+            del data["code"]
+        
         return data
