@@ -2,8 +2,8 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from core.models import Team
-from core.apis.v1.serializers import TeamSerializer
+from api.models import Team
+from api.core.v1.serializers import TeamSerializer
 
 
 class TeamViewSet(viewsets.GenericViewSet,

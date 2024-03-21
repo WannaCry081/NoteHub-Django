@@ -1,6 +1,6 @@
 import bleach
 from rest_framework import serializers
-from core.models import Team
+from api.models import Team
 
 
 class TeamSerializer(serializers.ModelSerializer):

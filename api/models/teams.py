@@ -1,5 +1,5 @@
 from django.db import models
-from core.utils import code_generator
+from api.utils import code_generator
 
 class Team(models.Model):
     

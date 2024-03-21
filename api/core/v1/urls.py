@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenBlacklistView, TokenRefreshView
-from core.apis.v1.viewsets import *
+from api.core.v1.viewsets import *
 
 
 auth_route = routers.DefaultRouter()
