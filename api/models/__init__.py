@@ -1,5 +1,5 @@
-from core.models.users import User
-from core.models.teams import Team
+from api.models.users import User
+from api.models.teams import Team
 
 
 __all__ = [
