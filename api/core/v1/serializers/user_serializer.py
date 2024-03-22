@@ -23,17 +23,17 @@ class UserSerializer(serializers.ModelSerializer):
         super(UserSerializer, self).__init__(*args, **kwargs)
         
         exclude_fields = []
-        request_method = self.context["request"].method if "request" in self.context else None
+        request = self.context["request"].method if "request" in self.context else None
         
-        if request_method in ["PATCH", "PUT"]:
+        if request in ["PATCH", "PUT"]:
             self.fields["username"].read_only = True
             self.fields["email"].read_only = True
             
             exclude_fields.extend(["re_password", "password"])
 
         if exclude_fields is not None:
-            for field_name in exclude_fields:
-                self.fields.pop(field_name, None)
+            for field in exclude_fields:
+                self.fields.pop(field, None)
         
         
     def validate(self, attrs):
