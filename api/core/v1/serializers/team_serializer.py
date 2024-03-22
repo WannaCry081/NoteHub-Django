@@ -7,11 +7,12 @@ class TeamSerializer(serializers.ModelSerializer):
     
     owner = serializers.StringRelatedField(read_only = True)
     members = serializers.StringRelatedField(many=True, read_only = True)
+    is_joined = serializers.SerializerMethodField(method_name="team_is_joined")
     
     class Meta:
         
         model = Team
-        fields = ["id", "profile", "name", "code", "description", "owner", "members"]
+        fields = ["id", "profile", "name", "code", "description", "owner", "is_joined", "members"]
         extra_kwargs = {
             "owner" : {"read_only" : True},
             "code" : {"read_only" : True}
@@ -76,3 +77,14 @@ class TeamSerializer(serializers.ModelSerializer):
             del data["code"]
         
         return data
+
+    
+    def team_is_joined(self, team : Team):
+        request = self.context.get("request")
+        
+        if request:
+            user = request.user
+            if user in team.members.all() or user == team.owner:
+                return True
+            
+        return False    
