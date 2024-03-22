@@ -3,9 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from api.models import User
-from api.core.v1.serializers import UserSerializer
-
+from api.models import User, Team
+from api.core.v1.serializers import UserSerializer, TeamSerializer
 
 class UserViewSet(viewsets.GenericViewSet,
                   mixins.RetrieveModelMixin,
@@ -39,10 +38,19 @@ class UserViewSet(viewsets.GenericViewSet,
     
     
     @action(methods=["GET"], detail=True)
-    def teams(self, request):
-        pass
+    def teams(self, request, pk=None):
+        try:
+            user_teams = Team.objects.filter(owner=request.user)
+            serializer = TeamSerializer(user_teams, many=True) 
+        except:
+            return Response(
+                {"detail" : "Internal Server Error"},
+                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     
     @action(methods=["GET"], detail=True)
-    def notes(self, request):
-        pass
+    def notes(self, request, pk=None):
+        return Response({"detail" : "Notes"})
