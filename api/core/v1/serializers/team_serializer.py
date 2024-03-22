@@ -72,7 +72,7 @@ class TeamSerializer(serializers.ModelSerializer):
         data["owner"] = self.get_owner(instance)
         data["members"] = self.get_members(instance)
         
-        if "code" in data and self.context["request"].method != "POST": 
+        if "code" in data and self.context.get("request") and self.context["request"].method != "POST":
             del data["code"]
         
         return data
