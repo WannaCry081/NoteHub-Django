@@ -42,3 +42,7 @@ class UserViewSet(viewsets.GenericViewSet,
     def teams(self, request):
         pass
     
+    
+    @action(methods=["GET"], detail=True)
+    def notes(self, request):
+        pass
