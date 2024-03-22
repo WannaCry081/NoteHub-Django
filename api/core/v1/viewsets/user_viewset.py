@@ -41,7 +41,11 @@ class UserViewSet(viewsets.GenericViewSet,
     def teams(self, request, pk=None):
         try:
             user_teams = Team.objects.filter(owner=request.user)
-            serializer = TeamSerializer(user_teams, many=True) 
+            serializer = TeamSerializer(
+                user_teams, 
+                many=True,
+                context = {"exclude_fields" : ["is_joined"]}) 
+
         except:
             return Response(
                 {"detail" : "Internal Server Error"},
