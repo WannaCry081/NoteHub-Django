@@ -8,7 +8,7 @@ class TeamSerializer(serializers.ModelSerializer):
     owner = serializers.StringRelatedField(read_only = True)
     members = serializers.StringRelatedField(many=True, read_only = True)
     is_joined = serializers.SerializerMethodField(method_name="team_is_joined")
-    
+
     class Meta:
         
         model = Team
@@ -17,7 +17,21 @@ class TeamSerializer(serializers.ModelSerializer):
             "owner" : {"read_only" : True},
             "code" : {"read_only" : True}
         }
-    
+        
+        
+    def __init__(self, *args, **kwargs):
+        super(TeamSerializer, self).__init__(*args, **kwargs)
+        
+        exclude_fields = []
+        
+        if "exclude_fields" in kwargs.get("context"):
+            exclude_fields.extend(kwargs.get("context").get("exclude_fields"))
+            
+        if exclude_fields is not None:
+            for field in exclude_fields:
+                self.fields.pop(field, None)
+
+             
     
     def validate(request, attrs):
         
@@ -70,11 +84,12 @@ class TeamSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         
         data = super().to_representation(instance)
+        
         data["owner"] = self.get_owner(instance)
         data["members"] = self.get_members(instance)
         
         if "code" in data and self.context.get("request") and self.context["request"].method != "POST":
-            del data["code"]
+            del data["code"]    
         
         return data
 
