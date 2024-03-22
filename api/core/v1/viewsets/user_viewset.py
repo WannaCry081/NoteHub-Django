@@ -6,8 +6,8 @@ from api.models import User
 from api.core.v1.serializers import UserSerializer
 
 
-class UserViewSet(viewsets.GenericViewSet, 
-                  mixins.ListModelMixin,
+class UserViewSet(viewsets.GenericViewSet,
+                  mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.DestroyModelMixin):
     
@@ -17,16 +17,12 @@ class UserViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     
     
-    def list(self, request, *args, **kwargs):
-        
-        try:
-            queryset = self.filter_queryset(request.user)
-            serializer = self.get_serializer(queryset)
-            
-        except:
-            return Response({"detail" : "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return User.objects.filter(id = self.request.user.id)
+    
+    
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
     
     def update(self, request, *args, **kwargs):
