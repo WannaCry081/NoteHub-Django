@@ -93,7 +93,7 @@ class TeamViewSet(viewsets.GenericViewSet,
             if team and request.user in team.members.all():
                 return Response(
                     {"detail": "User is already a member."},
-                    status=status.HTTP_200_OK
+                    status=status.HTTP_400_BAD_REQUEST
                 )
                 
             team.members.add(request.user)
@@ -118,4 +118,36 @@ class TeamViewSet(viewsets.GenericViewSet,
 
     @action(methods = ["DELETE"], detail = True)
     def leave(self, request, pk = None):
-        return Response({"detail" : "Leave"})
+        try:
+            team = self.queryset.filter(id = pk).first()
+            
+            if team and request.user == team.owner:
+                return Response(
+                    {"detail" : "User is an owner."},
+                    status = status.HTTP_400_BAD_REQUEST
+                ) 
+            
+            if not (team and request.user in team.members.all()):
+                return Response(
+                    {"detail" : "User is not a member of the team."},
+                    status = status.HTTP_400_BAD_REQUEST
+                ) 
+            
+            team.members.remove(request.user)
+
+            return Response(
+                {"detail": "User successfully left the team."},
+                status=status.HTTP_200_OK
+            )
+            
+        except Team.DoesNotExist:
+            return Response(
+                {"detail": "Team does not exist."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        except Exception as e: 
+            return Response( 
+                {"detail" : "Internal Server Error"},
+                status = status.HTTP_200_OK
+            )
