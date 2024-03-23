@@ -10,6 +10,7 @@ class Team(models.Model):
     
     owner = models.ForeignKey("User", on_delete=models.CASCADE)
     members = models.ManyToManyField("User", related_name="user_team", blank = True)
+    notes = models.ManyToManyField("Note", related_name="team_notes", blank = True)
     
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
