@@ -78,3 +78,6 @@ class TeamViewSet(viewsets.GenericViewSet,
         return Response({"detail" :  "Join"})
     
 
+    @action(methods = ["DELETE"], detail = True)
+    def leave(self, request, pk = None):
+        return Response({"detail" : "Leave"})
