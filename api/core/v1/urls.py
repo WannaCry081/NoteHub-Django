@@ -11,6 +11,7 @@ auth_route.register(r"login", LoginViewSet,  basename="login")
 route = routers.DefaultRouter()
 route.register(r"users", UserViewSet, basename="users")
 route.register(r"teams", TeamViewSet, basename="teams")
+route.register(r"notes", NoteViewSet, basename="notes")
 
 urlpatterns = [
     path("auth/", include([
