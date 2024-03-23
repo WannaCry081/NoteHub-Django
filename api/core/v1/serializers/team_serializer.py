@@ -70,9 +70,6 @@ class TeamSerializer(serializers.ModelSerializer):
                 members.append({
                     "id" : member.id,
                     "username" : member.username,
-                    "first_name" : member.first_name,
-                    "middle_name" : member.middle_name,
-                    "last_name" : member.last_name,
                     "email" : member.email
                 })
         
