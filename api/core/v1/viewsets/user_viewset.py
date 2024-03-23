@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -40,7 +41,8 @@ class UserViewSet(viewsets.GenericViewSet,
     @action(methods=["GET"], detail=True)
     def teams(self, request, pk=None):
         try:
-            user_teams = Team.objects.filter(owner=request.user)
+            user_teams = Team.objects.filter(
+                Q(owner=request.user) | Q(members=request.user))
             serializer = TeamSerializer(
                 user_teams, 
                 many=True,
