@@ -3,4 +3,4 @@
 
 *.log
 *.sqlite3
-**/migrations/
+/venv
