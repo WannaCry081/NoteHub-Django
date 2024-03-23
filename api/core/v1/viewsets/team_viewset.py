@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Team
 from api.core.v1.serializers import TeamSerializer
+from api.core.v1.permissions import IsOwner
 
 
 class TeamViewSet(viewsets.GenericViewSet,
@@ -19,8 +20,20 @@ class TeamViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     
     
+    def get_permissions(self):
+        
+        if self.action in ["update", "partial_update", "destroy"]:
+            return [IsAuthenticated(), IsOwner()]
+         
+        return super().get_permissions()
+    
+    
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+    
+    
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
         
     def create(self, request, *args,  **kwargs):
@@ -40,10 +53,6 @@ class TeamViewSet(viewsets.GenericViewSet,
             serializer.data,
             status=status.HTTP_201_CREATED
         )
-    
-    
-    def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
     
     
     def update(self, request, *args, **kwargs):
