@@ -1,5 +1,6 @@
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Team
@@ -65,3 +66,9 @@ class TeamViewSet(viewsets.GenericViewSet,
     
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
+    
+    
+    @action(methods = ["GET"], detail = True)
+    def members(self, request, pk = None):
+        return Response({"detail" : "Members"})
+    
