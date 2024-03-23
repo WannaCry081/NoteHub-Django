@@ -14,6 +14,7 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = ["id", "profile", "name", "code", "description", "owner", "is_joined", "members"]
         extra_kwargs = {
+            "name" : {"read_only" : True},
             "owner" : {"read_only" : True},
             "code" : {"read_only" : True}
         }
