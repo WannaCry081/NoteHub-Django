@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Team
-from api.core.v1.serializers import TeamSerializer
+from api.core.v1.serializers import TeamSerializer, JoinTeamSerializer
 from api.core.v1.permissions import IsOwner
 
 
@@ -80,10 +80,40 @@ class TeamViewSet(viewsets.GenericViewSet,
     def members(self, request, pk = None):
         return Response({"detail" : "Members"})
     
-    
+
     @action(methods = ["POST"], detail = True)
     def join(self, request, pk = None):
-        return Response({"detail" :  "Join"})
+        try: 
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            team = Team.objects.filter(
+                code=serializer.validated_data["code"]).first()
+
+            if team and request.user in team.members.all():
+                return Response(
+                    {"detail": "User is already a member."},
+                    status=status.HTTP_200_OK
+                )
+                
+            team.members.add(request.user)
+            
+            return Response(
+                {"detail": "User successfully added to the team."},
+                status=status.HTTP_201_CREATED
+            )
+            
+        except Team.DoesNotExist:
+            return Response(
+                {"detail": "Team does not exist."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        except Exception as e:
+            return Response( 
+                {"detail" : "Internal Server Error"},
+                status = status.HTTP_200_OK
+            )
     
 
     @action(methods = ["DELETE"], detail = True)
