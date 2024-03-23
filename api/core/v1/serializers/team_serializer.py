@@ -83,11 +83,11 @@ class TeamSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         
         data["owner"] = self.get_owner(instance)
-        data["members"] = self.get_members(instance)
-        
+        data["members"] = self.get_members(instance) if data.get("is_joined") else []
+            
         if "code" in data and self.context.get("request") and self.context["request"].method != "POST":
-            del data["code"]    
-        
+            del data["code"]
+     
         return data
 
     
