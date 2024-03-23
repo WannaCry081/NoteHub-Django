@@ -72,3 +72,9 @@ class TeamViewSet(viewsets.GenericViewSet,
     def members(self, request, pk = None):
         return Response({"detail" : "Members"})
     
+    
+    @action(methods = ["POST"], detail = True)
+    def join(self, request, pk = None):
+        return Response({"detail" :  "Join"})
+    
+
