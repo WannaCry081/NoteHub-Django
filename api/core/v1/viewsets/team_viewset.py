@@ -29,6 +29,14 @@ class TeamViewSet(viewsets.GenericViewSet,
         return super().get_permissions()
     
     
+    def get_serializer_class(self):
+        
+        if self.action == "join":
+            return JoinTeamSerializer
+        
+        return super().get_serializer_class()
+    
+    
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
     
