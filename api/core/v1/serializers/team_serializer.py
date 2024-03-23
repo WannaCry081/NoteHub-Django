@@ -31,7 +31,6 @@ class TeamSerializer(serializers.ModelSerializer):
         if exclude_fields is not None:
             for field in exclude_fields:
                 self.fields.pop(field, None)
-
              
     
     def validate(request, attrs):

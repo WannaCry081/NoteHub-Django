@@ -74,12 +74,7 @@ class TeamViewSet(viewsets.GenericViewSet,
     
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
-    
-    
-    @action(methods = ["GET"], detail = True)
-    def members(self, request, pk = None):
-        return Response({"detail" : "Members"})
-    
+
 
     @action(methods = ["POST"], detail = True)
     def join(self, request, pk = None):
