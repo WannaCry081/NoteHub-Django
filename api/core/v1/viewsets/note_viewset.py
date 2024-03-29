@@ -6,7 +6,6 @@ from api.core.v1.serializers import NoteSerializer
 
 
 class NoteViewSet(viewsets.GenericViewSet, 
-                  mixins.ListModelMixin,
                   mixins.CreateModelMixin, 
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
@@ -18,4 +17,6 @@ class NoteViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     
     
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
     
