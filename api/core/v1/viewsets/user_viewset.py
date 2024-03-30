@@ -46,7 +46,19 @@ class UserViewSet(viewsets.GenericViewSet,
         - Not Found error if user not found.
         - Internal Server Error if an unexpected exception occurs.
         """
-        return super().retrieve(request, *args, **kwargs)
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail": "Internal Server Error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
     
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs) 
