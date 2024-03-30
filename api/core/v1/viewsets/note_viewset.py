@@ -1,4 +1,5 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Note
@@ -18,8 +19,22 @@ class NoteViewSet(viewsets.GenericViewSet,
     
     
     def create(self, request, *args, **kwargs):
-        print(request.data)
-        return super().create(request, *args, **kwargs)
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(owner=request.user)
+            
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+    
+        except Exception as e:
+            print(e)
+            return Response(
+                {"detail": "Internal Server Error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     
     def retrieve(self, request, *args, **kwargs):
