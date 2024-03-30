@@ -18,6 +18,7 @@ class NoteViewSet(viewsets.GenericViewSet,
     
     
     def create(self, request, *args, **kwargs):
+        print(request.data)
         return super().create(request, *args, **kwargs)
     
     
