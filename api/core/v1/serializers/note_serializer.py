@@ -5,7 +5,6 @@ from api.models import Note
 
 class NoteSerializer(serializers.ModelSerializer):
     
-    team = serializers.StringRelatedField()
     owner = serializers.StringRelatedField()
     
     class Meta:
@@ -13,17 +12,16 @@ class NoteSerializer(serializers.ModelSerializer):
         model = Note
         fields = ["id", "title", "body", "team", "owner"]
         extra_kwargs = {
-            "team" : {"read_only" : True},
             "owner" : {"read_only" : True},
         }
         
     
     def validate(self, attrs):
-        
-        if "owner" in attrs:
-            attrs["owner"] = bleach.clean(attrs["owner"])
-        if "team" in attrs:
-            attrs["team"] = bleach.clean(attrs["team"])
+    
+        if "title" in attrs:
+            attrs["title"] = bleach.clean(attrs["title"])
+        if "body" in attrs:
+            attrs["body"] = bleach.clean(attrs["body"])
         
         return attrs
     
