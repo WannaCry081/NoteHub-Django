@@ -6,7 +6,7 @@ from api.models import Team
 class TeamSerializer(serializers.ModelSerializer):
     
     owner = serializers.StringRelatedField()
-    members = serializers.StringRelatedField(many=True)
+    members = serializers.StringRelatedField(many=True, read_only=True)
     is_joined = serializers.SerializerMethodField(method_name="team_is_joined")
 
     class Meta:
@@ -15,7 +15,6 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = ["id", "profile", "name", "code", "description", "owner", "is_joined", "members"]
         extra_kwargs = {
             "owner" : {"read_only" : True},
-            "members" : {"read_only" : True},
             "code" : {"read_only" : True}
         }
         
