@@ -18,3 +18,11 @@ class NoteSerializer(serializers.ModelSerializer):
         }
         
     
+    def validate(self, attrs):
+        
+        if "owner" in attrs:
+            attrs["owner"] = bleach.clean(attrs["owner"])
+        if "team" in attrs:
+            attrs["team"] = bleach.clean(attrs["team"])
+        
+        return attrs
