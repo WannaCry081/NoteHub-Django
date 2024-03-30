@@ -199,4 +199,12 @@ class NoteViewSet(viewsets.GenericViewSet,
         },
     )
     def destroy(self, request, *args, **kwargs):
+        """
+        Destroy method for deleting a note.
+
+        Returns:
+        - No Content if the note is successfully deleted.
+        - Note not found error if the note does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().destroy(request, *args, **kwargs)
