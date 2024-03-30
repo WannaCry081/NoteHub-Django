@@ -11,7 +11,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 40, blank = True, null = True)
     email = models.EmailField(unique = True, blank = False, null = False)
     
-    teams = models.ManyToManyField("Team", related_name="team_user", blank = True, null = True)
+    teams = models.ManyToManyField("Team", related_name="team_user", blank = True)
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]

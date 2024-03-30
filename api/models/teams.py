@@ -8,9 +8,9 @@ class Team(models.Model):
     name = models.CharField(max_length = 20, unique = True, blank = False, null = False)
     description = models.TextField(blank = True, null = True)
     
-    owner = models.ForeignKey("User", on_delete=models.CASCADE)
-    members = models.ManyToManyField("User", related_name="user_team", blank = True, null = True)
-    notes = models.ManyToManyField("Note", related_name="team_notes", blank = True, null = True)
+    owner = models.ForeignKey("User", on_delete=models.CASCADE, blank = False)
+    members = models.ManyToManyField("User", related_name="user_team", blank = True)
+    notes = models.ManyToManyField("Note", related_name="team_notes", blank = True)
     
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
