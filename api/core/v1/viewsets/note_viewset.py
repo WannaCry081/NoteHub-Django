@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Note, Team
 from api.core.v1.serializers import NoteSerializer
@@ -64,13 +65,16 @@ class NoteViewSet(viewsets.GenericViewSet,
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-
+        except ValidationError as e:
+            return Response(
+                {"detail" : str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         except Team.DoesNotExist:
             return Response(
                 {"detail" : "Team not found."},
                 status = status.HTTP_404_NOT_FOUND
             )
-            
         except Exception as e:
             return Response(
                 {"detail": "Internal Server Error"}, 
