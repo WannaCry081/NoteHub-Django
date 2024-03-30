@@ -23,12 +23,14 @@ class LoginViewSet(viewsets.GenericViewSet,
             
             refresh = RefreshToken.for_user(user) 
             
-        except:
+            return Response({
+                "refresh" : str(refresh),
+                "access" : str(refresh.access_token)
+            }, status=status.HTTP_200_OK)
+        
+        except Exception as e:
             return Response({"detail" : "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        return Response({
-            "access" : str(refresh.access_token),
-            "refresh" : str(refresh)
-        }, status=status.HTTP_200_OK)
+        
     
     
