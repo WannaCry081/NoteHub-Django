@@ -35,3 +35,15 @@ class NoteSerializer(serializers.ModelSerializer):
         
         return data
     
+    
+    def get_owner(self, instance):
+        
+        if instance:
+            owner_instance = instance.owner
+            return {
+                "id" : owner_instance.id,
+                "email" : owner_instance.email,
+                "username" : owner_instance.username
+            }
+        
+        return None
