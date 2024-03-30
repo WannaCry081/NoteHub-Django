@@ -198,8 +198,3 @@ class UserViewSet(viewsets.GenericViewSet,
                 {"detail" : "Internal Server Error"},
                 status = status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
-    
-    @action(methods=["GET"], detail=True)
-    def notes(self, request, pk=None):
-        return Response({"detail" : "Notes"})
