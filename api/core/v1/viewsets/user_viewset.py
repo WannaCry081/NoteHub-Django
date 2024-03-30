@@ -149,6 +149,14 @@ class UserViewSet(viewsets.GenericViewSet,
         },
     )
     def destroy(self, request, *args, **kwargs):
+        """
+        Destroy method for deleting the authenticated user.
+
+        Returns:
+        - No Content if user successfully deleted.
+        - Not Found error if user not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().destroy(request, *args, **kwargs)    
     
     
