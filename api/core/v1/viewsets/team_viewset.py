@@ -51,6 +51,13 @@ class TeamViewSet(viewsets.GenericViewSet,
         },
     )
     def list(self, request, *args, **kwargs):
+        """
+        List all teams.
+
+        Returns:
+        - List of all teams if successful.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().list(request, *args, **kwargs)
     
     
