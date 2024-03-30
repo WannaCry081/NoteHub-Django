@@ -16,6 +16,22 @@ class NoteSerializer(serializers.ModelSerializer):
         }
         
     
+    def __init__(self, *args, **kwargs):
+        super(NoteSerializer, self).__init__(*args, **kwargs)
+        
+        exclude_fields = []
+        
+        if "request" in self.context:
+            request = self.context["request"].method
+            
+            if request in ["PUT", "PATCH"]:
+                exclude_fields.extend(["team"])
+            
+            if exclude_fields is not None:
+                for field in exclude_fields:
+                    self.fields.pop(field, None)
+        
+        
     def validate(self, attrs):
     
         if "title" in attrs:
