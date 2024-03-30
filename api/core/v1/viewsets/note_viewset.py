@@ -28,7 +28,7 @@ class NoteViewSet(viewsets.GenericViewSet,
             type=openapi.TYPE_OBJECT,
             properties={
                 "title": openapi.Schema(type=openapi.TYPE_STRING),
-                "content": openapi.Schema(type=openapi.TYPE_STRING),
+                "body": openapi.Schema(type=openapi.TYPE_STRING),
                 "team": openapi.Schema(type=openapi.TYPE_INTEGER),
             },
         ),
@@ -117,6 +117,13 @@ class NoteViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         operation_summary="Update a note from the team.",
         operation_description="This endpoint will update all the information of the note data from the team.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "title": openapi.Schema(type=openapi.TYPE_STRING),
+                "body": openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
         responses={
             status.HTTP_200_OK: openapi.Response("OK", NoteSerializer),
             status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
@@ -151,9 +158,18 @@ class NoteViewSet(viewsets.GenericViewSet,
                 {"detail" : "Internal Server Error"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+            
     @swagger_auto_schema(
         operation_summary="Partial update of a note from the team.",
         operation_description="This endpoint will update one or more information of the note data from the team.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "title": openapi.Schema(type=openapi.TYPE_STRING),
+                "body": openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
         responses={
             status.HTTP_200_OK: openapi.Response("OK", NoteSerializer),
             status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
