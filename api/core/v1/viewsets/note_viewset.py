@@ -2,7 +2,7 @@ from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from api.models import Note
+from api.models import Note, Team
 from api.core.v1.serializers import NoteSerializer
 
 
@@ -24,13 +24,23 @@ class NoteViewSet(viewsets.GenericViewSet,
             serializer.is_valid(raise_exception=True)
             serializer.save(owner=request.user)
             
+            note = serializer.instance 
+            
+            team = Team.objects.get(id=request.data["team"])
+            team.notes.add(note)
+            
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-    
+
+        except Team.DoesNotExist:
+            return Response(
+                {"detail" : "Team not found."},
+                status = status.HTTP_404_NOT_FOUND
+            )
+            
         except Exception as e:
-            print(e)
             return Response(
                 {"detail": "Internal Server Error"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
