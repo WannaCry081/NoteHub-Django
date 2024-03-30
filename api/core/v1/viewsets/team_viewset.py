@@ -198,6 +198,7 @@ class TeamViewSet(viewsets.GenericViewSet,
     
     @swagger_auto_schema(
         operation_summary="Delete a team.",
+        operation_description="Remove a specific team and other relationship.",
         responses={
             status.HTTP_204_NO_CONTENT: openapi.Response("No Content"),
             status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
@@ -227,8 +228,27 @@ class TeamViewSet(viewsets.GenericViewSet,
             )
 
 
+    @swagger_auto_schema(
+        method="POST",
+        operation_summary="Join a team.",
+        operation_description="This endpoint lets you join to a team from the code you've entered in the body request.",
+        responses={
+            status.HTTP_201_CREATED: openapi.Response("Created", None),
+            status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     @action(methods = ["POST"], detail = True)
     def join(self, request, pk = None):
+        """
+        Join a team.
+
+        Returns:
+        - User successfully added to the team if successful.
+        - Bad Request if the user is already a member or team not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try: 
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -248,13 +268,16 @@ class TeamViewSet(viewsets.GenericViewSet,
                 {"detail": "User successfully added to the team."},
                 status=status.HTTP_201_CREATED
             )
-            
+        except ValidationError as e:
+            return Responses(
+                {"detail" : str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         except Team.DoesNotExist:
             return Response(
                 {"detail": "Team does not exist."}, 
                 status=status.HTTP_404_NOT_FOUND
             )
-            
         except Exception as e:
             return Response( 
                 {"detail" : "Internal Server Error"},
