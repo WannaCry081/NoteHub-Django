@@ -101,7 +101,7 @@ class UserViewSet(viewsets.GenericViewSet,
     
     
     @swagger_auto_schema(
-        operation_id="Update one or more information about the user",
+        operation_summary="Update one or more information about the user",
         operation_description="This endpoint updates one or more information from the body request of a authenticated specific user.",
         responses={
             status.HTTP_200_OK: openapi.Response("OK", UserSerializer),
@@ -176,13 +176,21 @@ class UserViewSet(viewsets.GenericViewSet,
         operation_summary="Lists teams associated with the user.",
         operation_description="This endpoint retrieves all the teams that the specific authenticated user have.",
         responses={
-            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer(many=True)),
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer(many=True, context = {"exclude_fields" : ["is_joined"]})),
             status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
             status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
         },
     )
     @action(methods=["GET"], detail=True)
     def teams(self, request, pk=None):
+        """
+        Action method for listing teams associated with the user.
+
+        Returns:
+        - List of teams associated with the user if successful.
+        - Team not found error if user has no associated teams.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try:
             user_teams = Team.objects.filter(
                 Q(owner=request.user) | Q(members=request.user))
