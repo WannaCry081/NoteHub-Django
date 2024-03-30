@@ -52,16 +52,18 @@ class TeamViewSet(viewsets.GenericViewSet,
             serializer.is_valid(raise_exception=True)
             serializer.save(owner=request.user)
             
-        except:
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+            
+        except Exception as e:
             return Response(
                 {"detail": "Internal Server Error"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED
-        )
+        
     
     
     def update(self, request, *args, **kwargs):
