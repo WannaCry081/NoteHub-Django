@@ -162,6 +162,15 @@ class NoteViewSet(viewsets.GenericViewSet,
         },
     )
     def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update method for partially updating a note.
+
+        Returns:
+        - Partially updated note details if successful.
+        - Bad Request error if the request data is invalid.
+        - Note not found error if the note does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().partial_update(request, *args, **kwargs)
     
     
