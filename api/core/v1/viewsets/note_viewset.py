@@ -114,6 +114,16 @@ class NoteViewSet(viewsets.GenericViewSet,
             )
     
     
+    @swagger_auto_schema(
+        operation_summary="Update a note from the team.",
+        operation_description="This endpoint will update one or more information of the note data from the team.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", NoteSerializer),
+            status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Note not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
     
