@@ -43,19 +43,29 @@ class UserViewSet(viewsets.GenericViewSet,
         try:
             user_teams = Team.objects.filter(
                 Q(owner=request.user) | Q(members=request.user))
+            
             serializer = TeamSerializer(
                 user_teams, 
                 many=True,
                 context = {"exclude_fields" : ["is_joined"]}) 
 
-        except:
+            return Response(
+                    serializer.data, 
+                    status=status.HTTP_200_OK
+                )
+
+        except Team.DoesNotExist:
+            return Response(
+                {"detail" : "Team not found."},
+                status = status.HTTP_404_NOT_FOUND
+            )
+            
+        except Exception as e:
             return Response(
                 {"detail" : "Internal Server Error"},
                 status = status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
     
     @action(methods=["GET"], detail=True)
     def notes(self, request, pk=None):
