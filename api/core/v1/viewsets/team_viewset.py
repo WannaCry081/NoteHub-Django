@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from api.models import Team
-from api.core.v1.serializers import TeamSerializer, JoinTeamSerializer
+from api.models import Team, Note
+from api.core.v1.serializers import TeamSerializer, JoinTeamSerializer, NoteSerializer
 from api.core.v1.permissions import IsOwner
 
 
@@ -33,6 +33,8 @@ class TeamViewSet(viewsets.GenericViewSet,
         
         if self.action == "join":
             return JoinTeamSerializer
+        elif self.action == "notes":
+            return NoteSerializer
         
         return super().get_serializer_class()
     
@@ -52,16 +54,16 @@ class TeamViewSet(viewsets.GenericViewSet,
             serializer.is_valid(raise_exception=True)
             serializer.save(owner=request.user)
             
-        except:
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+            
+        except Exception as e:
             return Response(
                 {"detail": "Internal Server Error"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED
-        )
     
     
     def update(self, request, *args, **kwargs):
@@ -145,4 +147,25 @@ class TeamViewSet(viewsets.GenericViewSet,
             return Response( 
                 {"detail" : "Internal Server Error"},
                 status = status.HTTP_200_OK
+            )
+            
+    
+    @action(methods=["GET"], detail=True)
+    def notes(self, request, pk=None):
+        try:
+            team = self.get_object()  
+            notes = team.notes.all()
+            serializer = self.get_serializer(notes, many=True)  
+            return Response(serializer.data, status=status.HTTP_200_OK) 
+        
+        except Team.DoesNotExist:
+            return Response(
+                {"detail": "Team does not exist."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        except Exception as e: 
+            return Response(
+                {"detail": "Internal Server Error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
