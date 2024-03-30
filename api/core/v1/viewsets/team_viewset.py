@@ -2,10 +2,13 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Team, Note
 from api.core.v1.serializers import TeamSerializer, JoinTeamSerializer, NoteSerializer
 from api.core.v1.permissions import IsOwner
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 class TeamViewSet(viewsets.GenericViewSet,
@@ -39,6 +42,14 @@ class TeamViewSet(viewsets.GenericViewSet,
         return super().get_serializer_class()
     
     
+    @swagger_auto_schema(
+        operation_summary="List all teams.",
+        operation_description="This endpoint retrieves a list of teams.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer(many=True, context = {"exclude_fields" : []})),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
     
