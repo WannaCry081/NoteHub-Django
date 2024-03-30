@@ -99,6 +99,17 @@ class UserViewSet(viewsets.GenericViewSet,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    
+    @swagger_auto_schema(
+        operation_id="Update one or more information about the user",
+        operation_description="This endpoint updates one or more information from the body request of a authenticated specific user.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", UserSerializer),
+            status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("User not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
     
