@@ -38,8 +38,15 @@ class UserViewSet(viewsets.GenericViewSet,
         },
     )
     def retrieve(self, request, *args, **kwargs):
+        """
+        Retrieve method for fetching the details of the authenticated user.
+
+        Returns:
+        - User details if found.
+        - Not Found error if user not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().retrieve(request, *args, **kwargs)
-    
     
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs) 
