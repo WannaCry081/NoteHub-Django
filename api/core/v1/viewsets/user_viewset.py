@@ -3,6 +3,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import User, Team
 from api.core.v1.serializers import UserSerializer, TeamSerializer
@@ -80,8 +81,23 @@ class UserViewSet(viewsets.GenericViewSet,
         - Not Found error if user not found.
         - Internal Server Error if an unexpected exception occurs.
         """
-        return super().update(request, *args, **kwargs) 
-    
+        try:
+            return super().update(request, *args, **kwargs) 
+        except ValidationError as e:
+            return Response(
+                {"detail": str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail": "Internal Server Error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
