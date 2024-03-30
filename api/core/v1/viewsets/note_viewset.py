@@ -100,7 +100,18 @@ class NoteViewSet(viewsets.GenericViewSet,
         - Note not found error if the note does not exist.
         - Internal Server Error if an unexpected exception occurs.
         """
-        return super().retrieve(request, *args, **kwargs)
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except Note.DoesNotExist:
+            return Response(
+                {"detail" : "Note not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail" : "Internal Server Error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     
     def update(self, request, *args, **kwargs):
