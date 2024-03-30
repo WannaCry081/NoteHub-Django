@@ -58,8 +58,13 @@ class TeamViewSet(viewsets.GenericViewSet,
         - List of all teams if successful.
         - Internal Server Error if an unexpected exception occurs.
         """
-        return super().list(request, *args, **kwargs)
-    
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            return Response(
+                {"detail" : "Internal Server Error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
