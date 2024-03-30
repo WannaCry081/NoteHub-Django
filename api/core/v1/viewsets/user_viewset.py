@@ -28,6 +28,15 @@ class UserViewSet(viewsets.GenericViewSet,
         return User.objects.filter(id = self.request.user.id)
     
     
+    @swagger_auto_schema(
+        operation_summary="Gets a specific user.",
+        operation_description="This endpoint retrieve a specific authenticated user based on the path parameter `id`.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", UserSerializer),
+            status.HTTP_404_NOT_FOUND: openapi.Response("User not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
     
