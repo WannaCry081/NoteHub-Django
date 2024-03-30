@@ -77,6 +77,14 @@ class TeamViewSet(viewsets.GenericViewSet,
         },
     )
     def retrieve(self, request, *args, **kwargs):
+        """
+        Retrieve a team by ID.
+
+        Returns:
+        - Retrieved team details if found.
+        - Team not found error if the team does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().retrieve(request, *args, **kwargs)
     
         
