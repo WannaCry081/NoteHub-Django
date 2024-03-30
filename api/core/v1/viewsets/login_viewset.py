@@ -19,7 +19,7 @@ class LoginViewSet(viewsets.GenericViewSet,
         operation_summary="Creates the necessary tokens for unauthenticated user.",
         operation_description="This endpoint return the newly created refresh and access token for existing unauthenticated user.",
         responses={
-            status.HTTP_201_CREATED : openapi.Response("Ok", schema=openapi.Schema(
+            status.HTTP_200_OK : openapi.Response("Ok", schema=openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties={
                     "refresh" : openapi.Schema(type=openapi.TYPE_STRING),   
@@ -54,7 +54,7 @@ class LoginViewSet(viewsets.GenericViewSet,
             return Response({
                 "refresh" : str(refresh),
                 "access" : str(refresh.access_token)
-            }, status=status.HTTP_201_CREATED)
+            }, status=status.HTTP_200_OK)
         
         except AuthenticationFailed as e:
             return Response(
