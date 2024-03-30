@@ -65,7 +65,17 @@ class TeamViewSet(viewsets.GenericViewSet,
                 {"detail" : "Internal Server Error"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-    
+            
+            
+    @swagger_auto_schema(
+        operation_summary="Retrieve a team by ID.",
+        operation_description="This endpoint retrieve a specific team from the path parameter.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
     
