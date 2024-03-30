@@ -33,6 +33,8 @@ class TeamViewSet(viewsets.GenericViewSet,
         
         if self.action == "join":
             return JoinTeamSerializer
+        elif self.action == "notes":
+            return NoteSerializer
         
         return super().get_serializer_class()
     
