@@ -321,9 +321,26 @@ class TeamViewSet(viewsets.GenericViewSet,
                 status = status.HTTP_200_OK
             )
             
-    
+    @swagger_auto_schema(
+        method="GET",
+        operation_summary="List notes of a team.",
+        operation_description="This endpoint retrieves a list of specific team notes.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", NoteSerializer(many=True)),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     @action(methods=["GET"], detail=True)
     def notes(self, request, pk=None):
+        """
+        List notes of a team.
+
+        Returns:
+        - List of notes belonging to the team if successful.
+        - Team not found error if the team does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try:
             team = self.get_object()  
             notes = team.notes.all()
