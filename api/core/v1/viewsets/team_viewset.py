@@ -132,8 +132,36 @@ class TeamViewSet(viewsets.GenericViewSet,
             )
     
     
+    @swagger_auto_schema(
+        operation_summary="Update a team.",
+        operation_description="This endpoint update all the team information based on the body request.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
+        """
+        Update a team.
+
+        Returns:
+        - Updated team details if successful.
+        - Team not found error if the team does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
+        try: 
+            return super().update(request, *args, **kwargs)
+        except Team.DoesNotExist:
+            return Response(
+                {"detail" : "Team does not exists."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail" : "Internal Server Error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     
     def partial_update(self, request, *args, **kwargs):
