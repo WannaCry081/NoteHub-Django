@@ -39,6 +39,17 @@ class NoteViewSet(viewsets.GenericViewSet,
         },
     )
     def create(self, request, *args, **kwargs):
+        """
+        Create method for creating a new note.
+
+        This endpoint creates a new note associated with the authenticated user and a team.
+
+        Returns:
+        - Created note details if successful.
+        - Bad Request error if the request data is invalid.
+        - Team not found error if the specified team does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
