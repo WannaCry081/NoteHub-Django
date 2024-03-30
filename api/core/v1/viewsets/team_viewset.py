@@ -108,7 +108,13 @@ class TeamViewSet(viewsets.GenericViewSet,
         },
     )
     def create(self, request, *args,  **kwargs):
-        
+        """
+        Create a new team.
+
+        Returns:
+        - Created team details if successful.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
