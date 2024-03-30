@@ -71,7 +71,7 @@ class TeamViewSet(viewsets.GenericViewSet,
         operation_summary="Retrieve a team by ID.",
         operation_description="This endpoint retrieve a specific team from the path parameter.",
         responses={
-            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer),
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer(context = {"exclude_fields" : []})),
             status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
             status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
         },
@@ -97,7 +97,16 @@ class TeamViewSet(viewsets.GenericViewSet,
                 {"detail" : "Internal Server Error"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
+    
+    
+    @swagger_auto_schema(
+        operation_summary="Create a new team.",
+        operation_description="This endpoint lets you creates a new team",
+        responses={
+            status.HTTP_201_CREATED: openapi.Response("Created", TeamSerializer(context = {"exclude_fields" : []})),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def create(self, request, *args,  **kwargs):
         
         try:
