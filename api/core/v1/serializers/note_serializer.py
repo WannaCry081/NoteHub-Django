@@ -26,3 +26,12 @@ class NoteSerializer(serializers.ModelSerializer):
             attrs["team"] = bleach.clean(attrs["team"])
         
         return attrs
+    
+    
+    def to_representation(self, instance):
+        
+        data = super().to_representation(instance)
+        
+        
+        return data
+    
