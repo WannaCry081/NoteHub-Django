@@ -189,6 +189,14 @@ class NoteViewSet(viewsets.GenericViewSet,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
-    
+    @swagger_auto_schema(
+        operation_summary="Delete a note from the team.",
+        operation_description="This endpoint remove a specfic note from the team.",
+        responses={
+            status.HTTP_204_NO_CONTENT: openapi.Response("No Content"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Note not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
