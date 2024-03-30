@@ -170,7 +170,17 @@ class UserViewSet(viewsets.GenericViewSet,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
-    
+        
+    @swagger_auto_schema(
+        method="GET",
+        operation_summary="Lists teams associated with the user.",
+        operation_description="This endpoint retrieves all the teams that the specific authenticated user have.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", TeamSerializer(many=True)),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     @action(methods=["GET"], detail=True)
     def teams(self, request, pk=None):
         try:
