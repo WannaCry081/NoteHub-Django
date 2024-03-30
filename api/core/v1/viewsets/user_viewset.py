@@ -111,6 +111,15 @@ class UserViewSet(viewsets.GenericViewSet,
         },
     )
     def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update method for partially updating the details of the authenticated user.
+
+        Returns:
+        - Partially updated user details if successful.
+        - Bad Request error if the request data is invalid.
+        - Not Found error if user not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().partial_update(request, *args, **kwargs)
     
     
