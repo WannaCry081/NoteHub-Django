@@ -6,12 +6,12 @@ class User(AbstractUser):
     
     profile = models.URLField(blank = True)
     username = models.CharField(max_length = 100, unique = True)
-    first_name = models.CharField(max_length = 40)
-    middle_name = models.CharField(max_length = 40)
-    last_name = models.CharField(max_length = 40)
-    email = models.EmailField(unique = True)
+    first_name = models.CharField(max_length = 40, blank = True, null = True)
+    middle_name = models.CharField(max_length = 40, blank = True, null = True)
+    last_name = models.CharField(max_length = 40, blank = True, null = True)
+    email = models.EmailField(unique = True, blank = False, null = False)
     
-    teams = models.ManyToManyField("Team", related_name="team_user", blank = True)
+    teams = models.ManyToManyField("Team", related_name="team_user", blank = True, null = True)
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
