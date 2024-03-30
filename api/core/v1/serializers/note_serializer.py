@@ -47,3 +47,18 @@ class NoteSerializer(serializers.ModelSerializer):
             }
         
         return None
+    
+    
+    def get_team(self, instance):
+        
+        if instance:
+            team_instance = instance.team
+            return {
+                "id" : team_instance.id,
+                "profile" : team_instance.profile,
+                "name" : team_instance.name,
+                "description" : team_instance.description,
+                "owner" : team_instance.owner
+            }
+            
+        return None
