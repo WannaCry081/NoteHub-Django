@@ -284,9 +284,28 @@ class TeamViewSet(viewsets.GenericViewSet,
                 status = status.HTTP_200_OK
             )
     
-
+    
+    @swagger_auto_schema(
+        method="DELETE",
+        operation_summary="Leave a team.",
+        operation_description="This endpoint lets you leave a specific team.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", None),
+            status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     @action(methods = ["DELETE"], detail = True)
     def leave(self, request, pk = None):
+        """
+        Leave a team.
+
+        Returns:
+        - User successfully left the team if successful.
+        - Bad Request if the user is an owner or not a member or team not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         try:
             team = self.queryset.filter(id = pk).first()
             
@@ -308,18 +327,22 @@ class TeamViewSet(viewsets.GenericViewSet,
                 {"detail": "User successfully left the team."},
                 status=status.HTTP_200_OK
             )
-            
+        except ValidationError as e:
+            return Response(
+                {"detail" : str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         except Team.DoesNotExist:
             return Response(
                 {"detail": "Team does not exist."}, 
                 status=status.HTTP_404_NOT_FOUND
             )
-            
         except Exception as e: 
             return Response( 
                 {"detail" : "Internal Server Error"},
                 status = status.HTTP_200_OK
             )
+            
             
     @swagger_auto_schema(
         method="GET",
