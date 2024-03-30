@@ -64,6 +64,16 @@ class UserViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         operation_summary="Update a specific user information.",
         operation_description="This endpoint updates all the information given to the body request on authenticated specific user.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "username": openapi.Schema(type=openapi.TYPE_STRING),
+                "first_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "middle_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "last_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "email": openapi.Schema(type=openapi.FORMAT_EMAIL)
+            }
+        ),
         responses={
             status.HTTP_200_OK: openapi.Response("OK", UserSerializer),
             status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
@@ -103,6 +113,16 @@ class UserViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(
         operation_summary="Update one or more information about the user",
         operation_description="This endpoint updates one or more information from the body request of a authenticated specific user.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "username": openapi.Schema(type=openapi.TYPE_STRING),
+                "first_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "middle_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "last_name": openapi.Schema(type=openapi.TYPE_STRING),
+                "email": openapi.Schema(type=openapi.FORMAT_EMAIL)
+            }
+        ),
         responses={
             status.HTTP_200_OK: openapi.Response("OK", UserSerializer),
             status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
