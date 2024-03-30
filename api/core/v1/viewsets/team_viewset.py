@@ -148,3 +148,8 @@ class TeamViewSet(viewsets.GenericViewSet,
                 {"detail" : "Internal Server Error"},
                 status = status.HTTP_200_OK
             )
+            
+    
+    @action(methods=["GET"], detail=True)
+    def notes(self, request, pk=None):
+        pass
