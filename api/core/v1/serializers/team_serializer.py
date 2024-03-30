@@ -5,8 +5,8 @@ from api.models import Team
 
 class TeamSerializer(serializers.ModelSerializer):
     
-    owner = serializers.StringRelatedField(read_only = True)
-    members = serializers.StringRelatedField(many=True, read_only = True)
+    owner = serializers.StringRelatedField()
+    members = serializers.StringRelatedField(many=True)
     is_joined = serializers.SerializerMethodField(method_name="team_is_joined")
 
     class Meta:
@@ -16,6 +16,7 @@ class TeamSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "name" : {"read_only" : True},
             "owner" : {"read_only" : True},
+            "members" : {"read_only" : True},
             "code" : {"read_only" : True}
         }
         
@@ -33,7 +34,7 @@ class TeamSerializer(serializers.ModelSerializer):
                 self.fields.pop(field, None)
              
     
-    def validate(request, attrs):
+    def validate(self, attrs):
         
         if "profile" in attrs: 
             attrs["profile"] = bleach.clean(attrs["profile"])
@@ -43,6 +44,19 @@ class TeamSerializer(serializers.ModelSerializer):
             attrs["description"] = bleach.clean(attrs["description"])
             
         return attrs
+    
+    
+    def to_representation(self, instance):
+        
+        data = super().to_representation(instance)
+        
+        data["owner"] = self.get_owner(instance)
+        data["members"] = self.get_members(instance) if data.get("is_joined") else []
+            
+        if "code" in data and self.context.get("request") and self.context["request"].method != "POST":
+            del data["code"]
+     
+        return data
     
     
     def get_owner(self, instance):
@@ -55,8 +69,7 @@ class TeamSerializer(serializers.ModelSerializer):
                 "email" : owner_instance.email,
             }
             
-        else:
-            return None
+        return None
         
     
     def get_members(self, instance):
@@ -74,21 +87,7 @@ class TeamSerializer(serializers.ModelSerializer):
         
             return members
             
-        else:
-            return None        
-    
-    
-    def to_representation(self, instance):
-        
-        data = super().to_representation(instance)
-        
-        data["owner"] = self.get_owner(instance)
-        data["members"] = self.get_members(instance) if data.get("is_joined") else []
-            
-        if "code" in data and self.context.get("request") and self.context["request"].method != "POST":
-            del data["code"]
-     
-        return data
+        return None        
 
     
     def team_is_joined(self, team : Team):
