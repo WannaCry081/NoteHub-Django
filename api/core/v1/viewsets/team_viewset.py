@@ -85,8 +85,18 @@ class TeamViewSet(viewsets.GenericViewSet,
         - Team not found error if the team does not exist.
         - Internal Server Error if an unexpected exception occurs.
         """
-        return super().retrieve(request, *args, **kwargs)
-    
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except Team.DoesNotExist:
+            return Response(
+                {"detail" : "Team does not exists."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail" : "Internal Server Error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
     def create(self, request, *args,  **kwargs):
         
