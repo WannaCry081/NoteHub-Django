@@ -92,6 +92,14 @@ class NoteViewSet(viewsets.GenericViewSet,
         },
     )
     def retrieve(self, request, *args, **kwargs):
+        """
+        Retrieve method for retrieving a note.
+
+        Returns:
+        - Retrieved note details if found.
+        - Note not found error if the note does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().retrieve(request, *args, **kwargs)
     
     
