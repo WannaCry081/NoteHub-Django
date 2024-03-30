@@ -125,6 +125,15 @@ class NoteViewSet(viewsets.GenericViewSet,
         },
     )
     def update(self, request, *args, **kwargs):
+        """
+        Update method for updating a note.
+
+        Returns:
+        - Updated note details if successful.
+        - Bad Request error if the request data is invalid.
+        - Note not found error if the note does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().update(request, *args, **kwargs)
     
     
