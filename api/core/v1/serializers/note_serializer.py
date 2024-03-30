@@ -32,6 +32,8 @@ class NoteSerializer(serializers.ModelSerializer):
         
         data = super().to_representation(instance)
         
+        data["owner"] = self.get_owner(instance)
+        data["team"] = self.get_team(instance)
         
         return data
     
@@ -57,8 +59,7 @@ class NoteSerializer(serializers.ModelSerializer):
                 "id" : team_instance.id,
                 "profile" : team_instance.profile,
                 "name" : team_instance.name,
-                "description" : team_instance.description,
-                "owner" : team_instance.owner
+                "description" : team_instance.description
             }
             
         return None
