@@ -6,6 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import User, Team
 from api.core.v1.serializers import UserSerializer, TeamSerializer
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
 
 class UserViewSet(viewsets.GenericViewSet,
                   mixins.RetrieveModelMixin,
@@ -19,6 +22,9 @@ class UserViewSet(viewsets.GenericViewSet,
     
     
     def get_queryset(self):
+        """
+        Get queryset filtering by current authenticated user.
+        """
         return User.objects.filter(id = self.request.user.id)
     
     
