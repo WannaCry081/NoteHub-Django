@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
     'api',
 ]
 
@@ -151,3 +152,7 @@ SIMPLE_JWT = {
 }
 
 APPEND_SLASH = False
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL' : '/api/auth/v1/auth/login/'
+}
