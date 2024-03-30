@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Note, Team
 from api.core.v1.serializers import NoteSerializer
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 class NoteViewSet(viewsets.GenericViewSet, 
@@ -18,6 +20,24 @@ class NoteViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     
     
+    @swagger_auto_schema(
+        operation_summary="Create a new note.",
+        operation_description="This endpoint creates a new note associated with the authenticated user and a team.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "title": openapi.Schema(type=openapi.TYPE_STRING),
+                "content": openapi.Schema(type=openapi.TYPE_STRING),
+                "team": openapi.Schema(type=openapi.TYPE_INTEGER),
+            },
+        ),
+        responses={
+            status.HTTP_201_CREATED: openapi.Response("Created", NoteSerializer),
+            status.HTTP_400_BAD_REQUEST: openapi.Response("Bad Request"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def create(self, request, *args, **kwargs):
         try:
             serializer = self.get_serializer(data=request.data)
