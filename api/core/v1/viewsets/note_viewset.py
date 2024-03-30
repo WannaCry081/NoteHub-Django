@@ -22,7 +22,7 @@ class NoteViewSet(viewsets.GenericViewSet,
     
     
     @swagger_auto_schema(
-        operation_summary="Create a new note.",
+        operation_summary="Create a new note from the team.",
         operation_description="This endpoint creates a new note associated with the authenticated user and a team.",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
@@ -82,6 +82,15 @@ class NoteViewSet(viewsets.GenericViewSet,
             )
     
     
+    @swagger_auto_schema(
+        operation_summary="Retrieve a note from the team.",
+        operation_description="This endpoint gets a specific note from the specific team.",
+        responses={
+            status.HTTP_200_OK: openapi.Response("OK", NoteSerializer),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Note not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
     
