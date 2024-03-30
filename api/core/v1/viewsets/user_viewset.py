@@ -71,6 +71,15 @@ class UserViewSet(viewsets.GenericViewSet,
         },
     )
     def update(self, request, *args, **kwargs):
+        """
+        Update method for updating the details of the authenticated user.
+
+        Returns:
+        - Updated user details if successful.
+        - Bad Request error if the request data is invalid.
+        - Not Found error if user not found.
+        - Internal Server Error if an unexpected exception occurs.
+        """
         return super().update(request, *args, **kwargs) 
     
     
