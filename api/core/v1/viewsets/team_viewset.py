@@ -196,8 +196,35 @@ class TeamViewSet(viewsets.GenericViewSet,
             )
     
     
+    @swagger_auto_schema(
+        operation_summary="Delete a team.",
+        responses={
+            status.HTTP_204_NO_CONTENT: openapi.Response("No Content"),
+            status.HTTP_404_NOT_FOUND: openapi.Response("Team not found"),
+            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response("Internal Server Error"),
+        },
+    )
     def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
+        """
+        Delete a team.
+
+        Returns:
+        - No Content if the team is successfully deleted.
+        - Team not found error if the team does not exist.
+        - Internal Server Error if an unexpected exception occurs.
+        """
+        try:
+            return super().destroy(request, *args, **kwargs)
+        except Team.DoesNotExist:
+            return Response(
+                {"detail" : "Team does not exists."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"detail" : "Internal Server Error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
     @action(methods = ["POST"], detail = True)
