@@ -141,6 +141,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSIONS_CLASSES' : [
         'rest_framework.permissions.IsAuthenticated'
     ],
+    'DEFAULT_FILTER_BACKENDS' : [
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter'
+    ],
     'DEFAULT_THROTTLE_CLASSES' : [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle', 
@@ -149,10 +153,6 @@ REST_FRAMEWORK = {
         'anon' : '50/day',
         'user' : '1000/day'
     },
-    'DEFAULT_FILTER_BACKENDS' : {
-        'rest_framework.filters.OrderingFilter',
-        'rest_framework.filters.SearchFilter'
-    }
 }
 
 SIMPLE_JWT = {
