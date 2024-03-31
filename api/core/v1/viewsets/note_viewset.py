@@ -22,7 +22,6 @@ class NoteViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     throttle_classes = [UserRateThrottle]
     
-    search_fields = ["title", "body"]
     ordering_fields = ["title", "body"]
     ordering = ["-created_at"]
     
