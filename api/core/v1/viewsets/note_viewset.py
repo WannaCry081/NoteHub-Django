@@ -22,6 +22,8 @@ class NoteViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     throttle_classes = [UserRateThrottle]
     
+    search_fields = ["title", "body"]
+    
     
     @swagger_auto_schema(
         operation_summary="Create a new note from the team.",
