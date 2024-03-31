@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from rest_framework.throttling import UserRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Team, Note
 from api.core.v1.serializers import TeamSerializer, JoinTeamSerializer, NoteSerializer
@@ -22,6 +23,11 @@ class TeamViewSet(viewsets.GenericViewSet,
     serializer_class = TeamSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
+    
+    search_fields = ["name", "description"]
+    ordering_fields = ["name", "description"]
+    ordering = ["-created_at"]
     
     
     def get_permissions(self):

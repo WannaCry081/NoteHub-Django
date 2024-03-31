@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from rest_framework.throttling import UserRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import User, Team
 from api.core.v1.serializers import UserSerializer, TeamSerializer
@@ -20,6 +21,7 @@ class UserViewSet(viewsets.GenericViewSet,
     serializer_class = UserSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
     
     
     def get_queryset(self):

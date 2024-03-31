@@ -3,6 +3,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.throttling import AnonRateThrottle
 from api.models import User
 from api.core.v1.serializers import LoginSerializer
 from drf_yasg import openapi
@@ -13,6 +14,7 @@ class LoginViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     
     serializer_class = LoginSerializer
+    throttle_classes = [AnonRateThrottle]
 
     
     @swagger_auto_schema(

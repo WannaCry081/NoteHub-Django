@@ -2,6 +2,7 @@ from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from rest_framework.throttling import UserRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from api.models import Note, Team
 from api.core.v1.serializers import NoteSerializer
@@ -19,6 +20,10 @@ class NoteViewSet(viewsets.GenericViewSet,
     serializer_class = NoteSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
+    
+    ordering_fields = ["title", "body"]
+    ordering = ["-created_at"]
     
     
     @swagger_auto_schema(
