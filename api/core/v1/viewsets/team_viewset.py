@@ -25,6 +25,10 @@ class TeamViewSet(viewsets.GenericViewSet,
     permission_classes = [IsAuthenticated]
     throttle_classes = [UserRateThrottle]
     
+    search_fields = ["name", "description"]
+    ordering_fields = ["name", "description"]
+    ordering = ["-created_at"]
+    
     
     def get_permissions(self):
         
