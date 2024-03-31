@@ -23,6 +23,8 @@ class NoteViewSet(viewsets.GenericViewSet,
     throttle_classes = [UserRateThrottle]
     
     search_fields = ["title", "body"]
+    ordering_fields = ["title", "body"]
+    ordering = ["-created_at"]
     
     
     @swagger_auto_schema(
