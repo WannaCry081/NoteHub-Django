@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 import os
 from django.contrib import admin
 from django.urls import path, include
@@ -26,30 +27,27 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ENVIRONMENT : str = str(os.environ.get("DJANGO_ENV")).lower()
+ENVIRONMENT: str = str(os.environ.get("DJANGO_ENV")).lower()
 
 schema_view = get_schema_view(
     openapi.Info(
-        title = "NoteHub - API",
-        default_version = "v1",
-        description = "A Note App Application Programming Interface (API) that provides a user-team experience.",
+        title="NoteHub - API",
+        default_version="v1",
+        description="A Note App Application Programming Interface (API) that provides a user-team experience.",
     ),
-    public = True,
-    authentication_classes = (JWTAuthentication,),
-    permission_classes = (AllowAny,),
+    public=True,
+    authentication_classes=(JWTAuthentication,),
+    permission_classes=(AllowAny,),
 )
 
 urlpatterns = [
-    path('api/', include([
-        path('v1/', include('api.v1.urls'))
-    ])),
-    
+    path("api/", include([path("v1/", include("api.v1.urls"))])),
 ]
 
 if ENVIRONMENT == "development":
     urlpatterns += [
-        path('admin/', admin.site.urls),
-        path('swagger<format>/', schema_view.without_ui(), name='schema-json'),
-        path('swagger/', schema_view.with_ui('swagger'), name='schema-redoc'),
-        path('redoc/', schema_view.with_ui('redoc'), name='schema-redoc')
+        path("admin/", admin.site.urls),
+        path("swagger<format>/", schema_view.without_ui(), name="schema-json"),
+        path("swagger/", schema_view.with_ui("swagger"), name="schema-redoc"),
+        path("redoc/", schema_view.with_ui("redoc"), name="schema-redoc"),
     ]

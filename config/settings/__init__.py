@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ENVIRONMENT : str = str(os.environ.get("DJANGO_ENV")).lower()
-VALUE : str = "config.settings.production"
+ENVIRONMENT: str = str(os.environ.get("DJANGO_ENV")).lower()
+VALUE: str = "config.settings.production"
 
 if ENVIRONMENT == "development":
     VALUE = "config.settings.local"

@@ -8,15 +8,16 @@ from django.core.management import execute_from_command_line
 
 load_dotenv()
 
-ENVIRONMENT : str = str(os.environ.get("DJANGO_ENV")).lower()
-VALUE : str = "config.settings.production"
+ENVIRONMENT: str = str(os.environ.get("DJANGO_ENV")).lower()
+VALUE: str = "config.settings.production"
 
 if ENVIRONMENT == "development":
     VALUE = "config.settings.local"
 
+
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', VALUE)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", VALUE)
     try:
         execute_from_command_line(sys.argv)
     except ImportError as exc:
@@ -27,5 +28,5 @@ def main():
         ) from exc
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
