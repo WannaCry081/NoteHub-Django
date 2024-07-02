@@ -1,4 +1,5 @@
 echo "Running Database Migrations"
+source venv/Scripts/activate
 
 python manage.py makemigrations 
 python manage.py migrate
@@ -11,4 +12,5 @@ if [ -n "$1" ] && [ "$1" == "run" ]; then
     python manage.py runserver
 fi
 
-exec "$@"
+deactivate
+exec "$@".
